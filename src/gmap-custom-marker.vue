@@ -4,9 +4,6 @@
   </div>
 </template>
 <script>
-import {ref, inject} from "vue";
-
-import {mapSymbol} from "vue3-google-map";
 
 export default {
   props: {
@@ -35,13 +32,13 @@ export default {
       default: false
     }
   },
-  mounted(options) {
-    this.map = inject(mapSymbol, ref(null));
-    console.log('on map', this.map)
-    if (this.$clusterPromise) {
-      options.map = null;
-    }
-    return this.$clusterPromise;
+  mounted() {
+
+    // TODO cluster
+    // if (this.$clusterPromise) {
+    //   options.map = null;
+    // }
+    // return this.$clusterPromise;
   },
   methods: {
     onMap() {
@@ -121,14 +118,16 @@ export default {
           const panes = this.getPanes();
           div.style.position = "absolute";
           div.style.display = "inline-block";
-          div.style.zIndex = this.zIndex;
+          div.style.zIndex = self.zIndex;
           panes.overlayLayer.appendChild(div);
           panes.overlayMouseTarget.appendChild(div);
           this.getDraggable = () => false;
           this.getPosition = () => {
-            return new this.maps.LatLng(this.lat, this.lng);
+            console.log('on get position', self.maps, self.lat, self.lng)
+            return new self.maps.LatLng(self.lat, self.lng);
           };
-          self.afterCreate(this);
+          //TODO cluster
+          // self.afterCreate(this);
         }
 
         onRemove() {
@@ -152,32 +151,28 @@ export default {
         }
       }, 100);
     },
-    afterCreate(inst) {
-      if (this.$clusterPromise && !this.isMarkerAdded) {
-        this.$clusterPromise.then(co => {
-          co.addMarker(inst);
-          this.$clusterObject = co;
-          this.isMarkerAdded = true;
-        });
-      }
-    }
+    //TODO cluster
+    // afterCreate(inst) {
+    // if (this.$clusterPromise && !this.isMarkerAdded) {
+    //   this.$clusterPromise.then(co => {
+    //     co.addMarker(inst);
+    //     this.$clusterObject = co;
+    //     this.isMarkerAdded = true;
+    //   });
+    // }
+    // }
   },
   data() {
     return {
-      opacity: 0.01,
-      loaded: false,
+      opacity: 0.01
     };
   },
   watch: {
     maps() {
-      if (!this.loaded) {
-        this.onMap()
-      }
-      this.loaded = true
-      console.log('on maps', this.maps)
+      this.onMap()
     },
     marker() {
-      setTimeout(() => this.$overlay.setPosition());
+      this.$overlay.setPosition()
     },
     zIndex() {
       if (this.$overlay) {
@@ -210,14 +205,15 @@ export default {
     }
   },
   unmounted() {
-    if (this.$clusterObject) {
-      this.$clusterObject.removeMarker(this.$overlay, true);
-    } else {
-      if (this.$overlay) {
-        this.$overlay.setMap(null);
-        this.$overlay = undefined;
-      }
+    //TODO cluster
+    // if (this.$clusterObject) {
+    //   this.$clusterObject.removeMarker(this.$overlay, true);
+    // } else {
+    if (this.$overlay) {
+      this.$overlay.setMap(null);
+      this.$overlay = undefined;
     }
+    // }
   }
 };
 </script>
