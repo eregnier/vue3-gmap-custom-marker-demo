@@ -95,9 +95,9 @@
         <textarea v-model="html"></textarea>
       </div>
       <hr/>
-        <button class="hide-tool center" @click="displayTools(false)">
-          hide tools
-        </button>
+      <button class="hide-tool center" @click="displayTools(false)">
+        hide tools
+      </button>
     </div>
     <button v-else class="show-tool" @click="displayTools(true)">
       show tools
@@ -231,7 +231,7 @@
 <script>
 import Weather from "./components/weather";
 import {GoogleMap} from 'vue3-google-map'
-import GmapCustomMarker from './gmap-custom-marker'
+import GmapCustomMarker from 'vue3-gmap-custom-marker'
 // import GmapCluster from "gmap-vue/dist/components/cluster";
 
 export default {
